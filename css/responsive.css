@@ -1,0 +1,45 @@
+@media (max-width: 520px) {
+    .toolbar {
+        grid-template-columns: 1fr;
+    }
+
+    .toolbar .primary-button {
+        width: 100%;
+    }
+
+    .exercise-card {
+        padding: var(--space-4);
+    }
+
+    .detail-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-summary .primary-button {
+        width: 100%;
+    }
+
+    .history-item {
+        grid-template-columns: 1fr;
+    }
+
+    .history-item__actions {
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 380px) {
+    .app-shell {
+        padding-right: var(--space-3);
+        padding-left: var(--space-3);
+    }
+
+    .weight-step-button {
+        min-width: 58px;
+        font-size: 0.85rem;
+    }
+
+    .detail-fields {
+        grid-template-columns: 1fr;
+    }
+}

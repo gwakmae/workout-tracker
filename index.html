@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#111318">
+
+    <title>운동 무게 기록</title>
+
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+    <div class="app-shell">
+        <header class="app-header">
+            <div>
+                <p class="app-header__eyebrow">Workout Continuity</p>
+                <h1 class="app-header__title">운동 무게 기록</h1>
+            </div>
+
+            <button id="open-settings-button" class="icon-button" type="button" aria-label="설정 열기">
+                ⚙
+            </button>
+        </header>
+
+        <div id="sync-status" class="sync-status" data-state="local">
+            <span class="sync-status__dot"></span>
+            <span id="sync-status-text">로컬에 저장됨</span>
+        </div>
+
+        <main class="app-main">
+            <section id="home-screen" class="screen" data-screen="home">
+                <div class="toolbar">
+                    <label class="search-box">
+                        <span class="sr-only">운동 검색</span>
+                        <input id="exercise-search" type="search" placeholder="운동 또는 기기 검색" autocomplete="off">
+                    </label>
+
+                    <button id="add-exercise-button" class="primary-button" type="button">
+                        운동 추가
+                    </button>
+                </div>
+
+                <div id="exercise-list" class="exercise-list"></div>
+
+                <div id="empty-exercise-state" class="empty-state" hidden>
+                    <strong>아직 등록한 운동이 없습니다.</strong>
+                    <p>운동이나 기기를 추가하고 사용한 무게를 기록해보세요.</p>
+                    <button id="empty-add-exercise-button" class="primary-button" type="button">
+                        첫 운동 추가
+                    </button>
+                </div>
+            </section>
+
+            <section id="detail-screen" class="screen" data-screen="detail" hidden>
+                <div class="detail-navigation">
+                    <button id="detail-back-button" class="text-button" type="button">
+                        ← 운동 목록
+                    </button>
+                </div>
+
+                <div id="exercise-detail"></div>
+            </section>
+
+            <section id="settings-screen" class="screen" data-screen="settings" hidden>
+                <div class="detail-navigation">
+                    <button id="settings-back-button" class="text-button" type="button">
+                        ← 운동 목록
+                    </button>
+                </div>
+
+                <div class="page-heading">
+                    <h2>설정</h2>
+                    <p>GitHub 저장소 및 백업을 관리합니다.</p>
+                </div>
+
+                <section class="settings-section">
+                    <div class="section-heading">
+                        <h3>GitHub 연결</h3>
+                        <p>
+                            토큰은 코드나 저장소가 아닌 이 브라우저에만 저장됩니다.
+                        </p>
+                    </div>
+
+                    <form id="github-settings-form" class="form-stack">
+                        <label class="field">
+                            <span>GitHub 사용자 이름</span>
+                            <input id="github-owner" name="owner" type="text" placeholder="예: piagwak" required>
+                        </label>
+
+                        <label class="field">
+                            <span>Repository 이름</span>
+                            <input id="github-repository" name="repository" type="text" value="workout-tracker"
+                                required>
+                        </label>
+
+                        <label class="field">
+                            <span>데이터 브랜치</span>
+                            <input id="github-branch" name="branch" type="text" value="data" readonly>
+                        </label>
+
+                        <label class="field">
+                            <span>Fine-grained Personal Access Token</span>
+                            <input id="github-token" name="token" type="password" autocomplete="off"
+                                placeholder="github_pat_..." required>
+                        </label>
+
+                        <div class="notice">
+                            토큰에는 이 저장소의
+                            <strong>Contents: Read and write</strong>
+                            권한만 부여하세요.
+                        </div>
+
+                        <div class="button-stack">
+                            <button id="connect-github-button" class="primary-button" type="submit">
+                                GitHub 연결 및 데이터 브랜치 준비
+                            </button>
+
+                            <button id="sync-now-button" class="secondary-button" type="button">
+                                지금 동기화
+                            </button>
+
+                            <button id="remove-token-button" class="danger-text-button" type="button">
+                                저장된 토큰 삭제
+                            </button>
+                        </div>
+                    </form>
+
+                    <p id="github-connection-message" class="connection-message"></p>
+                </section>
+
+                <section class="settings-section">
+                    <div class="section-heading">
+                        <h3>JSON 백업</h3>
+                        <p>GitHub 동기화와 별도로 파일 백업을 만들 수 있습니다.</p>
+                    </div>
+
+                    <div class="button-stack">
+                        <button id="export-json-button" class="secondary-button" type="button">
+                            JSON 백업 다운로드
+                        </button>
+
+                        <label class="secondary-button file-button">
+                            JSON 백업 불러오기
+                            <input id="import-json-input" type="file" accept="application/json,.json">
+                        </label>
+                    </div>
+                </section>
+
+                <section class="settings-section settings-section--danger">
+                    <div class="section-heading">
+                        <h3>전체 데이터 삭제</h3>
+                        <p>모든 운동과 기록을 삭제한 후 GitHub에도 반영합니다.</p>
+                    </div>
+
+                    <button id="delete-all-data-button" class="danger-button" type="button">
+                        모든 운동 기록 삭제
+                    </button>
+                </section>
+            </section>
+        </main>
+    </div>
+
+    <dialog id="exercise-dialog" class="app-dialog">
+        <form id="exercise-form" class="dialog-content">
+            <div class="dialog-header">
+                <div>
+                    <p class="dialog-eyebrow">Exercise</p>
+                    <h2 id="exercise-dialog-title">운동 추가</h2>
+                </div>
+
+                <button class="dialog-close-button" data-close-dialog="exercise-dialog" type="button" aria-label="닫기">
+                    ×
+                </button>
+            </div>
+
+            <input id="exercise-id" type="hidden">
+
+            <div class="form-stack">
+                <label class="field">
+                    <span>운동 또는 기기 이름</span>
+                    <input id="exercise-name" type="text" placeholder="예: 펙토럴 플라이" maxlength="100" required>
+                </label>
+
+                <fieldset class="field">
+                    <legend>무게 종류</legend>
+
+                    <div class="segmented-control">
+                        <label>
+                            <input type="radio" name="weightType" value="normal" checked>
+                            <span>일반 중량</span>
+                        </label>
+
+                        <label>
+                            <input type="radio" name="weightType" value="assisted">
+                            <span>보조 중량</span>
+                        </label>
+                    </div>
+
+                    <p class="field-help">
+                        어시스트 딥/친업처럼 무게가 높을수록 쉬운 기구는
+                        보조 중량을 선택하세요.
+                    </p>
+                </fieldset>
+
+                <label class="field">
+                    <span>기기 설정 메모</span>
+                    <textarea id="exercise-settings" rows="3" maxlength="500"
+                        placeholder="예: 좌석 높이 4, 손잡이 2"></textarea>
+                </label>
+            </div>
+
+            <div class="dialog-actions">
+                <button class="secondary-button" data-close-dialog="exercise-dialog" type="button">
+                    취소
+                </button>
+
+                <button class="primary-button" type="submit">
+                    저장
+                </button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="record-dialog" class="app-dialog">
+        <form id="record-form" class="dialog-content">
+            <div class="dialog-header">
+                <div>
+                    <p class="dialog-eyebrow">Workout Log</p>
+                    <h2 id="record-dialog-title">오늘 기록</h2>
+                    <p id="record-exercise-name" class="dialog-subtitle"></p>
+                </div>
+
+                <button class="dialog-close-button" data-close-dialog="record-dialog" type="button" aria-label="닫기">
+                    ×
+                </button>
+            </div>
+
+            <input id="record-id" type="hidden">
+            <input id="record-exercise-id" type="hidden">
+
+            <div class="previous-record">
+                <span>지난 기록</span>
+                <strong id="previous-record-text">기록 없음</strong>
+            </div>
+
+            <div class="form-stack">
+                <label class="field">
+                    <span id="record-weight-label">무게</span>
+
+                    <div class="weight-control">
+                        <button id="decrease-weight-button" class="weight-step-button" type="button">
+                            −2.5
+                        </button>
+
+                        <div class="weight-input-wrap">
+                            <input id="record-weight" type="number" inputmode="decimal" min="0" step="0.5"
+                                placeholder="40" required>
+                            <span>kg</span>
+                        </div>
+
+                        <button id="increase-weight-button" class="weight-step-button" type="button">
+                            +2.5
+                        </button>
+                    </div>
+                </label>
+
+                <label class="field">
+                    <span>날짜</span>
+                    <input id="record-date" type="date" required>
+                </label>
+
+                <label class="toggle-field">
+                    <input id="record-detail-toggle" type="checkbox">
+                    <span>횟수와 세트도 기록</span>
+                </label>
+
+                <div id="record-detail-fields" class="detail-fields" hidden>
+                    <label class="field">
+                        <span>횟수</span>
+                        <div class="unit-input">
+                            <input id="record-reps" type="number" inputmode="numeric" min="1" step="1" placeholder="12">
+                            <span>회</span>
+                        </div>
+                    </label>
+
+                    <label class="field">
+                        <span>세트</span>
+                        <div class="unit-input">
+                            <input id="record-sets" type="number" inputmode="numeric" min="1" step="1" placeholder="3">
+                            <span>세트</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="dialog-actions">
+                <button class="secondary-button" data-close-dialog="record-dialog" type="button">
+                    취소
+                </button>
+
+                <button class="primary-button" type="submit">
+                    기록 저장
+                </button>
+            </div>
+        </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+    <script src="js/config/constants.js"></script>
+    <script src="js/utils/helpers.js"></script>
+    <script src="js/data/schema.js"></script>
+    <script src="js/storage/local-storage.js"></script>
+    <script src="js/state/store.js"></script>
+    <script src="js/api/github-api.js"></script>
+    <script src="js/services/sync-service.js"></script>
+    <script src="js/app/router.js"></script>
+    <script src="js/ui/render-main.js"></script>
+    <script src="js/ui/forms.js"></script>
+    <script src="js/ui/settings.js"></script>
+    <script src="js/app/actions.js"></script>
+    <script src="js/app/main.js"></script>
+</body>
+
+</html>

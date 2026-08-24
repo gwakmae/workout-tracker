@@ -1,0 +1,205 @@
+.search-box input,
+.field input,
+.field textarea {
+    width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    outline: none;
+    background: var(--color-surface);
+}
+
+.search-box input {
+    height: 46px;
+    padding: 0 var(--space-4);
+}
+
+.field input {
+    min-height: 48px;
+    padding: 0 var(--space-3);
+}
+
+.field textarea {
+    padding: var(--space-3);
+}
+
+.search-box input:focus,
+.field input:focus,
+.field textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgb(145 255 102 / 10%);
+}
+
+.form-stack {
+    display: grid;
+    gap: var(--space-4);
+}
+
+.field {
+    display: grid;
+    gap: var(--space-2);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.field>span,
+.field legend {
+    font-size: 0.85rem;
+    font-weight: 750;
+}
+
+.field-help {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+}
+
+.segmented-control {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+}
+
+.segmented-control input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.segmented-control span {
+    display: grid;
+    min-height: 44px;
+    place-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    color: var(--color-text-muted);
+}
+
+.segmented-control input:checked+span {
+    border-color: var(--color-primary);
+    background: rgb(145 255 102 / 10%);
+    color: var(--color-primary);
+    font-weight: 800;
+}
+
+.toggle-field {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+}
+
+.toggle-field input {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--color-primary);
+}
+
+.detail-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+}
+
+.weight-control {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--space-2);
+}
+
+.weight-step-button {
+    min-width: 66px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface-raised);
+    font-weight: 800;
+}
+
+.weight-input-wrap,
+.unit-input {
+    position: relative;
+}
+
+.weight-input-wrap input,
+.unit-input input {
+    padding-right: 44px;
+    text-align: right;
+    font-size: 1.1rem;
+    font-weight: 850;
+}
+
+.weight-input-wrap span,
+.unit-input span {
+    position: absolute;
+    top: 50%;
+    right: var(--space-3);
+    color: var(--color-text-muted);
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.app-dialog {
+    width: min(calc(100% - 24px), 560px);
+    max-height: calc(100vh - 24px);
+    padding: 0;
+    overflow: auto;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-large);
+    background: var(--color-surface);
+    color: var(--color-text);
+    box-shadow: var(--shadow-dialog);
+}
+
+.app-dialog::backdrop {
+    background: rgb(0 0 0 / 72%);
+    backdrop-filter: blur(3px);
+}
+
+.dialog-content {
+    padding: var(--space-5);
+}
+
+.dialog-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+}
+
+.dialog-header h2 {
+    margin-bottom: 0;
+}
+
+.dialog-subtitle {
+    margin: var(--space-1) 0 0;
+    color: var(--color-text-muted);
+}
+
+.dialog-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+    margin-top: var(--space-6);
+}
+
+.previous-record {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+    padding: var(--space-3);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface-raised);
+}
+
+.previous-record span {
+    color: var(--color-text-muted);
+}
+
+.previous-record strong {
+    color: var(--color-primary);
+}
