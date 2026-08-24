@@ -1,15 +1,76 @@
 WorkoutApp.Schema = {
     emptyDocument() {
-        const now = WorkoutApp.Utils.now();
-
         return {
             version: WorkoutApp.Constants.schemaVersion,
-            updatedAt: now,
+            updatedAt: WorkoutApp.Utils.now(),
             exercises: [],
-            records: [],
-            deletedExercises: [],
-            deletedRecords: []
+            deletedExercises: []
         };
+    },
+
+    normalizeExercise(exercise, legacyRecords = []) {
+        const latestRecord = WorkoutApp.Utils.latestRecord(
+            legacyRecords,
+            exercise.id
+        );
+
+        const createdAt =
+            exercise.createdAt ||
+            latestRecord?.createdAt ||
+            WorkoutApp.Utils.now();
+
+        const updatedAtValues = [
+            exercise.updatedAt,
+            latestRecord?.updatedAt,
+            createdAt
+        ].filter(Boolean);
+
+        const updatedAt = updatedAtValues.sort().at(-1);
+
+        const existingWeight = WorkoutApp.Utils.hasValue(
+            exercise.weightKg
+        );
+
+        const existingReps = WorkoutApp.Utils.hasValue(exercise.reps);
+        const existingSets = WorkoutApp.Utils.hasValue(exercise.sets);
+
+        return {
+            id: exercise.id || WorkoutApp.Utils.id("exercise"),
+            name: String(exercise.name || "").trim(),
+            weightKg: WorkoutApp.Utils.optionalNumber(
+                existingWeight
+                    ? exercise.weightKg
+                    : latestRecord?.weightKg
+            ),
+            reps: WorkoutApp.Utils.optionalNumber(
+                existingReps
+                    ? exercise.reps
+                    : latestRecord?.reps
+            ),
+            sets: WorkoutApp.Utils.optionalNumber(
+                existingSets
+                    ? exercise.sets
+                    : latestRecord?.sets
+            ),
+            notes: String(
+                exercise.notes ?? exercise.machineSettings ?? ""
+            ).trim(),
+            createdAt,
+            updatedAt
+        };
+    },
+
+    normalizeDeletedExercises(items) {
+        if (!Array.isArray(items)) {
+            return [];
+        }
+
+        return items
+            .filter((item) => item?.id)
+            .map((item) => ({
+                id: item.id,
+                deletedAt: item.deletedAt || WorkoutApp.Utils.now()
+            }));
     },
 
     normalizeDocument(value) {
@@ -19,17 +80,25 @@ WorkoutApp.Schema = {
             return empty;
         }
 
+        const exercises = Array.isArray(value.exercises)
+            ? value.exercises
+            : [];
+
+        const legacyRecords = Array.isArray(value.records)
+            ? value.records
+            : [];
+
         return {
             version: WorkoutApp.Constants.schemaVersion,
             updatedAt: value.updatedAt || empty.updatedAt,
-            exercises: Array.isArray(value.exercises) ? value.exercises : [],
-            records: Array.isArray(value.records) ? value.records : [],
-            deletedExercises: Array.isArray(value.deletedExercises)
-                ? value.deletedExercises
-                : [],
-            deletedRecords: Array.isArray(value.deletedRecords)
-                ? value.deletedRecords
-                : []
+            exercises: exercises
+                .map((exercise) =>
+                    this.normalizeExercise(exercise, legacyRecords)
+                )
+                .filter((exercise) => exercise.name),
+            deletedExercises: this.normalizeDeletedExercises(
+                value.deletedExercises
+            )
         };
     },
 
@@ -45,7 +114,8 @@ WorkoutApp.Schema = {
 
             if (
                 !existing ||
-                String(item.updatedAt || "") >= String(existing.updatedAt || "")
+                String(item.updatedAt || "") >=
+                String(existing.updatedAt || "")
             ) {
                 map.set(item.id, item);
             }
@@ -66,7 +136,8 @@ WorkoutApp.Schema = {
 
             if (
                 !existing ||
-                String(item.deletedAt || "") >= String(existing.deletedAt || "")
+                String(item.deletedAt || "") >=
+                String(existing.deletedAt || "")
             ) {
                 map.set(item.id, item);
             }
@@ -100,33 +171,29 @@ WorkoutApp.Schema = {
             remote.deletedExercises
         );
 
-        const deletedRecords = this.mergeTombstones(
-            local.deletedRecords,
-            remote.deletedRecords
-        );
-
         const exercises = this.removeDeleted(
-            this.mergeItemCollections(local.exercises, remote.exercises),
+            this.mergeItemCollections(
+                local.exercises,
+                remote.exercises
+            ),
             deletedExercises
         );
 
-        const exerciseIds = new Set(exercises.map((exercise) => exercise.id));
-
-        const records = this.removeDeleted(
-            this.mergeItemCollections(local.records, remote.records),
-            deletedRecords
-        ).filter((record) => exerciseIds.has(record.exerciseId));
+        const updatedAt = [
+            local.updatedAt,
+            remote.updatedAt,
+            ...exercises.map((exercise) => exercise.updatedAt),
+            ...deletedExercises.map((item) => item.deletedAt)
+        ]
+            .filter(Boolean)
+            .sort()
+            .at(-1) || WorkoutApp.Utils.now();
 
         return {
             version: WorkoutApp.Constants.schemaVersion,
-            updatedAt: [local.updatedAt, remote.updatedAt]
-                .filter(Boolean)
-                .sort()
-                .at(-1) || WorkoutApp.Utils.now(),
+            updatedAt,
             exercises,
-            records,
-            deletedExercises,
-            deletedRecords
+            deletedExercises
         };
     }
 };

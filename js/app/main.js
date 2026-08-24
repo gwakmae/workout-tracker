@@ -13,12 +13,6 @@ WorkoutApp.App = {
             });
 
         document
-            .querySelector("#detail-back-button")
-            .addEventListener("click", () => {
-                WorkoutApp.Router.home();
-            });
-
-        document
             .querySelector("#add-exercise-button")
             .addEventListener("click", () => {
                 WorkoutApp.Forms.openExercise();
@@ -33,7 +27,9 @@ WorkoutApp.App = {
         document
             .querySelector("#exercise-search")
             .addEventListener("input", (event) => {
-                WorkoutApp.Store.state.searchQuery = event.target.value;
+                WorkoutApp.Store.state.searchQuery =
+                    event.target.value;
+
                 WorkoutApp.UI.renderHome();
             });
 
@@ -41,18 +37,6 @@ WorkoutApp.App = {
             .querySelector("#exercise-form")
             .addEventListener("submit", (event) => {
                 WorkoutApp.Actions.saveExercise(event);
-            });
-
-        document
-            .querySelector("#record-form")
-            .addEventListener("submit", (event) => {
-                WorkoutApp.Actions.saveRecord(event);
-            });
-
-        document
-            .querySelector("#record-detail-toggle")
-            .addEventListener("change", (event) => {
-                WorkoutApp.Forms.toggleRecordDetails(event.target.checked);
             });
 
         document
@@ -72,10 +56,23 @@ WorkoutApp.App = {
             });
 
         document
+            .querySelector("#delete-exercise-button")
+            .addEventListener("click", (event) => {
+                const exerciseId =
+                    event.currentTarget.dataset.exerciseId;
+
+                if (exerciseId) {
+                    WorkoutApp.Actions.deleteExercise(exerciseId);
+                }
+            });
+
+        document
             .querySelectorAll("[data-close-dialog]")
             .forEach((button) => {
                 button.addEventListener("click", () => {
-                    WorkoutApp.Forms.close(button.dataset.closeDialog);
+                    WorkoutApp.Forms.close(
+                        button.dataset.closeDialog
+                    );
                 });
             });
 
@@ -126,13 +123,17 @@ WorkoutApp.App = {
                 "local",
                 "GitHub 연결 안 됨 · 로컬 저장"
             );
+
             return;
         }
 
         try {
             await WorkoutApp.SyncService.syncNow();
         } catch (error) {
-            console.error("초기 GitHub 동기화 실패:", error);
+            console.error(
+                "초기 GitHub 동기화 실패:",
+                error
+            );
         }
     }
 };

@@ -1,7 +1,7 @@
 window.WorkoutApp = window.WorkoutApp || {};
 
 WorkoutApp.Constants = Object.freeze({
-    schemaVersion: 1,
+    schemaVersion: 2,
 
     storageKeys: {
         data: "workout-tracker:data",

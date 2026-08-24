@@ -20,23 +20,25 @@ WorkoutApp.Utils = {
             .slice(0, 10);
     },
 
-    formatDate(value) {
-        if (!value) {
-            return "";
-        }
-
-        return new Intl.DateTimeFormat("ko-KR", {
-            year: "numeric",
-            month: "short",
-            day: "numeric"
-        }).format(new Date(`${value}T00:00:00`));
+    hasValue(value) {
+        return value !== null && value !== undefined && value !== "";
     },
 
-    formatWeight(weight) {
-        const number = Number(weight);
+    optionalNumber(value) {
+        if (!this.hasValue(value)) {
+            return null;
+        }
+
+        const number = Number(value);
+
+        return Number.isFinite(number) ? number : null;
+    },
+
+    formatNumber(value) {
+        const number = Number(value);
 
         if (!Number.isFinite(number)) {
-            return "-";
+            return "";
         }
 
         return Number.isInteger(number)
@@ -44,36 +46,48 @@ WorkoutApp.Utils = {
             : number.toFixed(1).replace(/\.0$/, "");
     },
 
-    formatRecord(record, exercise) {
-        if (!record) {
-            return "기록 없음";
+    formatExerciseValues(exercise) {
+        if (!exercise) {
+            return "설정값 없음";
         }
 
-        const prefix = exercise?.weightType === "assisted" ? "보조 " : "";
-        let result = `${prefix}${this.formatWeight(record.weightKg)}kg`;
+        const values = [];
 
-        if (record.reps) {
-            result += ` × ${record.reps}회`;
+        if (this.hasValue(exercise.weightKg)) {
+            values.push(`${this.formatNumber(exercise.weightKg)}kg`);
         }
 
-        if (record.sets) {
-            result += ` × ${record.sets}세트`;
+        if (this.hasValue(exercise.reps)) {
+            values.push(`${this.formatNumber(exercise.reps)}회`);
         }
 
-        return result;
+        if (this.hasValue(exercise.sets)) {
+            values.push(`${this.formatNumber(exercise.sets)}세트`);
+        }
+
+        return values.length > 0
+            ? values.join(" · ")
+            : "설정값 없음";
     },
 
     latestRecord(records, exerciseId) {
         return records
             .filter((record) => record.exerciseId === exerciseId)
             .sort((a, b) => {
-                const dateCompare = b.date.localeCompare(a.date);
+                const firstUpdatedAt = String(a.updatedAt || a.createdAt || "");
+                const secondUpdatedAt = String(
+                    b.updatedAt || b.createdAt || ""
+                );
 
-                if (dateCompare !== 0) {
-                    return dateCompare;
+                const updatedCompare = secondUpdatedAt.localeCompare(
+                    firstUpdatedAt
+                );
+
+                if (updatedCompare !== 0) {
+                    return updatedCompare;
                 }
 
-                return b.updatedAt.localeCompare(a.updatedAt);
+                return String(b.date || "").localeCompare(String(a.date || ""));
             })[0] || null;
     },
 
@@ -95,8 +109,10 @@ WorkoutApp.Utils = {
     decodeBase64(value) {
         const cleanValue = value.replace(/\n/g, "");
         const binary = atob(cleanValue);
-        const bytes = Uint8Array.from(binary, (character) =>
-            character.charCodeAt(0)
+
+        const bytes = Uint8Array.from(
+            binary,
+            (character) => character.charCodeAt(0)
         );
 
         return new TextDecoder().decode(bytes);
@@ -113,15 +129,19 @@ WorkoutApp.Utils = {
             };
         }
 
+        const owner = hostname.split(".")[0];
+
         return {
-            owner: hostname.split(".")[0],
-            repository: parts[0] || `${hostname.split(".")[0]}.github.io`
+            owner,
+            repository: parts[0] || `${owner}.github.io`
         };
     },
 
     sortByUpdatedAt(items) {
         return [...items].sort((a, b) =>
-            b.updatedAt.localeCompare(a.updatedAt)
+            String(b.updatedAt || "").localeCompare(
+                String(a.updatedAt || "")
+            )
         );
     }
 };
