@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": "2026-08-25T05:04:12.061Z",
+  "updatedAt": "2026-08-25T05:19:47.663Z",
   "exercises": [
     {
       "id": "exercise-92ca36cd-c5ea-473e-9817-944fec8de750",
@@ -31,6 +31,16 @@
       "notes": "",
       "createdAt": "2026-08-25T04:50:41.295Z",
       "updatedAt": "2026-08-25T04:50:41.295Z"
+    },
+    {
+      "id": "exercise-76b4f490-5e1f-4897-b401-f3803e5cee19",
+      "name": "Linear Row",
+      "weightKg": 10,
+      "reps": 10,
+      "sets": 3,
+      "notes": "허리 90도",
+      "createdAt": "2026-08-25T05:19:47.662Z",
+      "updatedAt": "2026-08-25T05:19:47.662Z"
     }
   ],
   "deletedExercises": [
