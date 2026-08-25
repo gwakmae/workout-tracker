@@ -1,7 +1,18 @@
 {
   "version": 2,
-  "updatedAt": "2026-08-25T04:25:11.344Z",
-  "exercises": [],
+  "updatedAt": "2026-08-25T04:26:52.591Z",
+  "exercises": [
+    {
+      "id": "exercise-92ca36cd-c5ea-473e-9817-944fec8de750",
+      "name": "Pactoral Fly",
+      "weightKg": 4,
+      "reps": 15,
+      "sets": null,
+      "notes": "",
+      "createdAt": "2026-08-25T04:26:52.591Z",
+      "updatedAt": "2026-08-25T04:26:52.591Z"
+    }
+  ],
   "deletedExercises": [
     {
       "id": "exercise-55606252-23c1-4b79-8506-64482883a551",
