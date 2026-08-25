@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": "2026-08-25T04:26:52.591Z",
+  "updatedAt": "2026-08-25T04:37:28.881Z",
   "exercises": [
     {
       "id": "exercise-92ca36cd-c5ea-473e-9817-944fec8de750",
@@ -11,6 +11,16 @@
       "notes": "",
       "createdAt": "2026-08-25T04:26:52.591Z",
       "updatedAt": "2026-08-25T04:26:52.591Z"
+    },
+    {
+      "id": "exercise-1d0fbf77-4987-4613-8dda-f5b4f144f455",
+      "name": "Seated Row",
+      "weightKg": 30,
+      "reps": 10,
+      "sets": 3,
+      "notes": "",
+      "createdAt": "2026-08-25T04:37:28.881Z",
+      "updatedAt": "2026-08-25T04:37:28.881Z"
     }
   ],
   "deletedExercises": [
