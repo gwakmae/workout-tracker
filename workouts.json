@@ -1,17 +1,11 @@
 {
   "version": 2,
-  "updatedAt": "2026-08-25T01:45:58.315Z",
-  "exercises": [
+  "updatedAt": "2026-08-25T01:47:36.330Z",
+  "exercises": [],
+  "deletedExercises": [
     {
       "id": "exercise-55606252-23c1-4b79-8506-64482883a551",
-      "name": "팩토럴 플라이",
-      "weightKg": null,
-      "reps": null,
-      "sets": null,
-      "notes": "40kg",
-      "createdAt": "2026-08-24T14:52:43.782Z",
-      "updatedAt": "2026-08-24T14:52:43.782Z"
+      "deletedAt": "2026-08-25T01:47:36.330Z"
     }
-  ],
-  "deletedExercises": []
+  ]
 }
