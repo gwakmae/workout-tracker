@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": "2026-08-25T04:37:28.881Z",
+  "updatedAt": "2026-08-25T04:50:41.297Z",
   "exercises": [
     {
       "id": "exercise-92ca36cd-c5ea-473e-9817-944fec8de750",
@@ -21,6 +21,16 @@
       "notes": "",
       "createdAt": "2026-08-25T04:37:28.881Z",
       "updatedAt": "2026-08-25T04:37:28.881Z"
+    },
+    {
+      "id": "exercise-fc4f9d55-ac80-4ed9-a501-03c82b460113",
+      "name": "Lat Pulldown",
+      "weightKg": 35,
+      "reps": 10,
+      "sets": 3,
+      "notes": "",
+      "createdAt": "2026-08-25T04:50:41.295Z",
+      "updatedAt": "2026-08-25T04:50:41.295Z"
     }
   ],
   "deletedExercises": [
