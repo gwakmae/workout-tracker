@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": "2026-08-25T05:19:47.663Z",
+  "updatedAt": "2026-08-26T07:50:47.462Z",
   "exercises": [
     {
       "id": "exercise-92ca36cd-c5ea-473e-9817-944fec8de750",
@@ -41,6 +41,16 @@
       "notes": "허리 90도",
       "createdAt": "2026-08-25T05:19:47.662Z",
       "updatedAt": "2026-08-25T05:19:47.662Z"
+    },
+    {
+      "id": "exercise-49512b92-cc45-4236-b770-15178af768cd",
+      "name": "Assisted DIP",
+      "weightKg": 40,
+      "reps": 10,
+      "sets": 3,
+      "notes": "",
+      "createdAt": "2026-08-26T07:50:47.461Z",
+      "updatedAt": "2026-08-26T07:50:47.461Z"
     }
   ],
   "deletedExercises": [
