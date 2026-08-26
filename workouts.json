@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": "2026-08-26T07:50:47.462Z",
+  "updatedAt": "2026-08-26T08:19:21.645Z",
   "exercises": [
     {
       "id": "exercise-92ca36cd-c5ea-473e-9817-944fec8de750",
@@ -51,6 +51,16 @@
       "notes": "",
       "createdAt": "2026-08-26T07:50:47.461Z",
       "updatedAt": "2026-08-26T07:50:47.461Z"
+    },
+    {
+      "id": "exercise-10d1c9ea-04db-49cb-9f78-db540fc588b6",
+      "name": "Hammer Strength",
+      "weightKg": 10,
+      "reps": 10,
+      "sets": 3,
+      "notes": "",
+      "createdAt": "2026-08-26T08:19:21.644Z",
+      "updatedAt": "2026-08-26T08:19:21.644Z"
     }
   ],
   "deletedExercises": [
